@@ -6,7 +6,6 @@
 #define POLLERASIO_POLLER_H
 
 #include <list>
-#include <map>
 #include <boost/asio.hpp>
 #include <boost/bind/bind.hpp>
 #include "Callback.h"
