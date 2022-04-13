@@ -3,14 +3,14 @@
 //
 
 #include "Poller.h"
+#include <algorithm>
+
+using std::find;
 
 Poller::Poller() {
 }
 
 Poller::~Poller() {
-    for (auto cb: cbs) {
-        remove(*cb);
-    }
 }
 
 
@@ -22,13 +22,15 @@ void Poller::adiciona(Callback & cb) {
 void Poller::remove(Callback & cb) {
     cb.disable();
     cb.disable_timeout();
+    auto it = find(cbs.begin(), cbs.end(), &cb);
+    if (it != cbs.end()) cbs.erase(it);
+
 }
 
 void Poller::limpa() {
     for (auto & cb: cbs) {
         remove(*cb);
     }
-    cbs.clear();
 }
 
 void Poller::despache() {

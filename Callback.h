@@ -18,6 +18,8 @@
 #include <boost/asio.hpp>
 #include <boost/bind/bind.hpp>
 
+class Poller;
+
 using std::unique_ptr;
 
 // classe abstrata para os callbacks do poller
@@ -32,8 +34,6 @@ public:
     Callback(long tout);
 
     ~Callback();
-
-    void init(boost::asio::io_context & io);
 
     // ao especializar esta classe, devem-se implementar estes dois métodos !
     // handle: trata o evento representado neste callback
@@ -55,9 +55,6 @@ public:
     void enable();
     bool is_enabled() const { return enabled;}
     bool timeout_enabled() const { return enabled_to;}
-    void run();
-    void prep_handle(const boost::system::error_code& erro);
-    void prep_handle_timeout(const boost::system::error_code& erro);
 protected:
     unique_ptr<boost::asio::posix::stream_descriptor> descr;
     unique_ptr<boost::asio::steady_timer> timer;
@@ -67,6 +64,14 @@ protected:
     long base_tout;// milissegundos. Se <= 0, este callback não tem timeout
     bool enabled_to;
     bool enabled;
+
+private:
+    friend class Poller;
+
+    void init(boost::asio::io_context & io);
+    void run();
+    void prep_handle(const boost::system::error_code& erro);
+    void prep_handle_timeout(const boost::system::error_code& erro);
 };
 #endif /* CALLBACK_H */
 

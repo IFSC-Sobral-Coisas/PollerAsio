@@ -28,15 +28,19 @@ public:
     // adiciona um evento a ser vigiado, representado por um Callback
     void adiciona(Callback & cb);
 
-    // remove callback associado ao descritor de arquivo fd
+    // remove callback
     void remove(Callback & cb);
 
     // remove todos callbacks
     void limpa();
 
-    // vigia os descritores cadastrados e despacha os eventos (chama os callbacks)
-    // para ser lido, ou até que expire o timeout (em milissegundos)
+    // vigia os descritores cadastrados e despacha um evento
+    // para ser lido, ou até que expire o timeout  (chama seu callback)
     void despache_simples();
+
+    // despacha eventos para os callbacks indefinidamente
+    // retorna se nenhum novo evento puder ser gerado, o que acontece
+    // se todos os callbacks estiverem desativados (incluindo seus timers)
     void despache();
 
 protected:
