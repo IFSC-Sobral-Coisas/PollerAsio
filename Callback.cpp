@@ -48,8 +48,8 @@ void Callback::set_timeout(long timeout) {
     tout = timeout;
 }
 
-bool Callback::operator==(const Callback & o) const {
-  return fd == o.fd;
+bool Callback::operator==(const Callback * o) const {
+  return fd == o->fd;
 }
 
 void Callback::disable_timeout() {

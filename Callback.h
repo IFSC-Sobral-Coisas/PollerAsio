@@ -89,7 +89,7 @@ private:
     void prep_handle_timeout(const boost::system::error_code& erro);
     // operator==: compara dois objetos callback
     // necessário para poder diferenciar callbacks ...
-    virtual bool operator==(const Callback & o) const;
+    virtual bool operator==(const Callback * o) const;
 };
 #endif /* CALLBACK_H */
 
