@@ -27,7 +27,7 @@ Callback::~Callback() {
 }
 
 void Callback::init(boost::asio::io_context & io) {
-    if (fd >= 0) {
+    if (enabled) {
         descr.reset(new boost::asio::posix::stream_descriptor(io, fd));
     }
     if (enabled_to) {
