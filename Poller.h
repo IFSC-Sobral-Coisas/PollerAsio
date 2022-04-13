@@ -12,9 +12,6 @@
 #include "Callback.h"
 
 using std::list;
-using std::map;
-
-#define MAX_FDS 10
 
 // Poller: um despachador de eventos
 // Um objeto poller é capaz de monitorar um conjunto de descritores de arquivos
