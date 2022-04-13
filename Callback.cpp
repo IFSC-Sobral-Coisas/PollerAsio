@@ -13,7 +13,7 @@
 
 #include "Callback.h"
 
-Callback::Callback(int fd, long tout): fd(fd), base_tout(tout),tout(tout), enabled_to(true), enabled(fd >= 0) {
+Callback::Callback(boost::asio::posix::stream_descriptor::native_handle_type fd, long tout): fd(fd), base_tout(tout),tout(tout), enabled_to(true), enabled(fd >= 0) {
     if (tout < 0) throw -1;
 }
 
@@ -35,7 +35,7 @@ void Callback::init(boost::asio::io_context & io) {
     }
 }
 
-int Callback::filedesc() const { return fd;}
+boost::asio::posix::stream_descriptor::native_handle_type Callback::filedesc() const { return fd;}
 
 int Callback::timeout() const { return timer->expires_from_now().count();}
 
