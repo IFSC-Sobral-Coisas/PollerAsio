@@ -4,15 +4,14 @@
 
 using namespace std;
 
-class CallbackStdin: public CallbackStream {
+class PortReader: public CallbackSerial {
 public:
-    CallbackStdin(long tout): CallbackStream(0, tout) {}
+    PortReader(const string & path, long tout): CallbackSerial(path, tout) {}
 
     void handle() {
-        string w;
-
-        getline(cin, w);
-        cout << "Lido: " << w << endl;
+        cout << "recebidos " << buf_len << " bytes: ";
+        cout.write(data, buf_len);
+        cout << endl;
     }
 
     void handle_timeout() {
@@ -43,7 +42,7 @@ private:
 
 int main() {
     // cria o objeto CallbackStdin, com timeout de 5000ms
-    CallbackStdin cb(5000);
+    PortReader cb("/dev/pts/2", 5000);
     Timer t(3000);
 
     //cria um poller: ele contém um loop de eventos !

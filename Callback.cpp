@@ -156,7 +156,7 @@ void CallbackSerial::run() {
     if (enabled) {
         if (descr.get()) {
             descr->cancel();
-            descr->async_read_some(boost::asio::buffer(data, buf_len),
+            descr->async_read_some(boost::asio::buffer(data, BufSize),
                                    handler);
         }
     }

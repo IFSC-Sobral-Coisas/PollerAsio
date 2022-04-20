@@ -122,6 +122,7 @@ protected:
         Complete(CallbackSerial * ptr):cb(ptr) {}
         void operator()(boost::system::error_code err, std::size_t n) {
             if (!err) {
+                cb->buf_len = n;
                 cb->handle();
                 cb->run();
             }
