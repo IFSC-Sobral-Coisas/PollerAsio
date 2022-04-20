@@ -4,9 +4,9 @@
 
 using namespace std;
 
-class CallbackStdin: public Callback {
+class CallbackStdin: public CallbackStream {
 public:
-    CallbackStdin(long tout): Callback(0, tout) {}
+    CallbackStdin(long tout): CallbackStream(0, tout) {}
 
     void handle() {
         string w;
