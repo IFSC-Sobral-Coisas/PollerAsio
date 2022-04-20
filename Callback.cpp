@@ -75,6 +75,7 @@ void Callback::run() {
 
 // adaptador para callback de um descritor genérico POSIX
 CallbackStream::CallbackStream(boost::asio::posix::stream_descriptor::native_handle_type fd, long tout): Callback(tout), handler(this), fd(fd) {
+    enabled = true;
 }
 
 CallbackStream::CallbackStream(long tout): Callback(tout),handler(this),fd(-1) {
@@ -98,11 +99,13 @@ bool CallbackStream::operator==(const CallbackStream * o) const {
 }
 
 void CallbackStream::run() {
+    Callback::run();
     if (enabled) {
-        descr->cancel();
-        descr->async_wait(boost::asio::posix::stream_descriptor::wait_read,
-                          handler);
-//                          boost::bind(&Callback::prep_handle, this, boost::asio::placeholders::error));
+        if (descr.get()) {
+            descr->cancel();
+            descr->async_wait(boost::asio::posix::stream_descriptor::wait_read,
+                              handler);
+        }
     }
 }
 
@@ -120,6 +123,7 @@ CallbackStream::~CallbackStream() {
 
 // adaptador para callback da porta serial
 CallbackSerial::CallbackSerial(const string & path, long tout): Callback(tout),handler(this),dev_name(path) {
+    enabled = true;
 }
 
 CallbackSerial::CallbackSerial(long tout): Callback(tout),handler(this) {
@@ -148,10 +152,13 @@ boost::asio::posix::stream_descriptor::native_handle_type CallbackSerial::filede
 }
 
 void CallbackSerial::run() {
+    Callback::run();
     if (enabled) {
-        descr->cancel();
-        descr->async_read_some(boost::asio::buffer(data, buf_len),
-                               handler);
+        if (descr.get()) {
+            descr->cancel();
+            descr->async_read_some(boost::asio::buffer(data, buf_len),
+                                   handler);
+        }
     }
 }
 

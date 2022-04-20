@@ -75,7 +75,7 @@ protected:
         TimeoutHandler(Callback * ptr):cb(ptr) {}
         void operator()(boost::system::error_code err) {
             if (!err) {
-                cb->handle();
+                cb->handle_timeout();
                 cb->reload_timeout();
                 cb->run();
             }
@@ -94,10 +94,8 @@ protected:
 
     friend class Poller;
 
-    void init(boost::asio::io_context & io);
-    void run();
-    void prep_handle(const boost::system::error_code& erro);
-    void prep_handle_timeout(const boost::system::error_code& erro);
+    virtual void init(boost::asio::io_context & io);
+    virtual void run();
     // operator==: compara dois objetos callback
     // necessário para poder diferenciar callbacks ...
     virtual bool operator==(const Callback * o) const;
@@ -178,8 +176,8 @@ protected:
     Handler handler;
     boost::asio::posix::stream_descriptor::native_handle_type fd;
 
-    void init(boost::asio::io_context & io);
-    void run();
+    virtual void init(boost::asio::io_context & io);
+    virtual void run();
     // operator==: compara dois objetos callback
     // necessário para poder diferenciar callbacks ...
     virtual bool operator==(const CallbackStream * o) const;
