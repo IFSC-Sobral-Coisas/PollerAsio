@@ -9,6 +9,9 @@ public:
     PortReader(const string & path, long tout): CallbackSerial(path, tout) {}
 
     void handle() {
+        // Os dados recebidos estão no buffer "data"
+        // A quantidade de bytes recebidos está em "buf_len"
+        // "data" e "buf_len" são atributos herdados de CallbackSerial
         cout << "recebidos " << buf_len << " bytes: ";
         cout.write(data, buf_len);
         cout << endl;
